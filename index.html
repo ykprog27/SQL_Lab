@@ -1,34 +1,350 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>SQL Lab – مراجعة Beginner و Intermediate</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f3f5f8;--card:#fff;--ink:#1b2733;--mut:#5d6c7b;--line:#dce2e9;--brand:#0b5cab;--soft:#e8f1fb;--hd:#0f2540;--ok:#1d8a4e;--warn:#b7791f;--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d141c;--card:#16202b;--ink:#e5ebf1;--mut:#94a3b3;--line:#263341;--brand:#5aa7ee;--soft:#14283d;--hd:#0a1118;--ok:#4cc380;--warn:#e0a94a;--bad:#ef7b6e}}
-:root[data-theme="dark"]{--bg:#0d141c;--card:#16202b;--ink:#e5ebf1;--mut:#94a3b3;--line:#263341;--brand:#5aa7ee;--soft:#14283d;--hd:#0a1118;--ok:#4cc380;--warn:#e0a94a;--bad:#ef7b6e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 Cairo,Tahoma,sans-serif}
-header{background:var(--hd);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:18px;border-bottom:4px solid #f2a900}
-header b{font-size:20px}header small{opacity:.7}.pg{flex:1;max-width:320px;margin-inline-start:auto}
-.bar{height:8px;background:#ffffff30;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:#f2a900;width:0;transition:width .3s}
-.pg span{font-size:12px;opacity:.8}
-.wrap{display:grid;grid-template-columns:270px 1fr;gap:20px;max-width:1100px;margin:20px auto;padding:0 16px}
-nav{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;align-self:start}
-nav h4{margin:12px 8px 4px;font-size:12px;color:var(--mut);letter-spacing:.5px}
-nav button{display:flex;width:100%;gap:8px;align-items:center;text-align:start;border:0;background:none;color:var(--ink);font:inherit;font-size:15px;padding:7px 10px;border-radius:7px;cursor:pointer}
-nav button:hover{background:var(--soft)}nav button.on{background:var(--brand);color:#fff}nav button[disabled]{opacity:.45;cursor:default}nav em{font-style:normal;font-size:11px;margin-inline-start:auto;opacity:.8}
-main{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:26px 30px;min-width:0}
-h1{margin:0 0 4px;font-size:26px}.sub{color:var(--mut);margin:0 0 18px}h3{margin:26px 0 10px;border-inline-start:4px solid var(--brand);padding-inline-start:10px}
-pre{direction:ltr;text-align:left;background:#0f1b2b;color:#d6e4f5;padding:14px 16px;border-radius:8px;overflow-x:auto;font:13.5px/1.6 'JetBrains Mono',Consolas,monospace;margin:10px 0}
-.ex{border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin:12px 0}.ex.d{background:var(--soft)}
-.top{display:flex;gap:10px;align-items:center}.top label{margin-inline-start:auto;font-size:13px;color:var(--mut);cursor:pointer}
-.lv{font-size:12px;font-weight:700;padding:1px 10px;border-radius:20px;border:1px solid currentColor}.l1{color:var(--ok)}.l2{color:var(--warn)}.l3{color:var(--bad)}
-summary{cursor:pointer;color:var(--brand);font-weight:600}.note{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:15px}
-.cp,.nx button{font:inherit;background:var(--brand);color:#fff;border:0;border-radius:7px;padding:6px 16px;cursor:pointer}.nx{display:flex;justify-content:space-between;margin-top:26px}
-.tb{display:flex;gap:10px;flex-wrap:wrap}.tb div{flex:1;min-width:200px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}.tb code{direction:ltr;display:block;text-align:left;font:12.5px 'JetBrains Mono',monospace;color:var(--mut)}
-@media(max-width:800px){.wrap{grid-template-columns:1fr}nav{display:flex;overflow-x:auto;gap:4px;padding:6px}nav h4{display:none}nav button{white-space:nowrap;width:auto}main{padding:18px}}
-</style></head><body>
-<header><div><b>SQL Lab</b><br><small>مراجعة Beginner + Intermediate · PostgreSQL</small></div><div class="pg"><span id="pt"></span><div class="bar"><i id="pb"></i></div></div></header>
-<div class="wrap"><nav id="nav"></nav><main id="main"></main></div>
-<script>
-const SETUP=`CREATE TABLE customers(id INT PRIMARY KEY, name TEXT, city TEXT, email TEXT, joined DATE);
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SQL Lab – مراجعة Beginner و Intermediate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --card: #fff;
+      --ink: #1b2733;
+      --mut: #5d6c7b;
+      --line: #dce2e9;
+      --brand: #0b5cab;
+      --soft: #e8f1fb;
+      --hd: #0f2540;
+      --ok: #1d8a4e;
+      --warn: #b7791f;
+      --bad: #c0392b;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0d141c;
+        --card: #16202b;
+        --ink: #e5ebf1;
+        --mut: #94a3b3;
+        --line: #263341;
+        --brand: #5aa7ee;
+        --soft: #14283d;
+        --hd: #0a1118;
+        --ok: #4cc380;
+        --warn: #e0a94a;
+        --bad: #ef7b6e
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0d141c;
+      --card: #16202b;
+      --ink: #e5ebf1;
+      --mut: #94a3b3;
+      --line: #263341;
+      --brand: #5aa7ee;
+      --soft: #14283d;
+      --hd: #0a1118;
+      --ok: #4cc380;
+      --warn: #e0a94a;
+      --bad: #ef7b6e
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.8 Cairo, Tahoma, sans-serif
+    }
+
+    header {
+      background: var(--hd);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 4px solid #f2a900
+    }
+
+    header b {
+      font-size: 20px
+    }
+
+    header small {
+      opacity: .7
+    }
+
+    .pg {
+      flex: 1;
+      max-width: 320px;
+      margin-inline-start: auto
+    }
+
+    .bar {
+      height: 8px;
+      background: #ffffff30;
+      border-radius: 9px;
+      overflow: hidden
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: #f2a900;
+      width: 0;
+      transition: width .3s
+    }
+
+    .pg span {
+      font-size: 12px;
+      opacity: .8
+    }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 20px;
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 16px
+    }
+
+    nav {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      align-self: start
+    }
+
+    nav h4 {
+      margin: 12px 8px 4px;
+      font-size: 12px;
+      color: var(--mut);
+      letter-spacing: .5px
+    }
+
+    nav button {
+      display: flex;
+      width: 100%;
+      gap: 8px;
+      align-items: center;
+      text-align: start;
+      border: 0;
+      background: none;
+      color: var(--ink);
+      font: inherit;
+      font-size: 15px;
+      padding: 7px 10px;
+      border-radius: 7px;
+      cursor: pointer
+    }
+
+    nav button:hover {
+      background: var(--soft)
+    }
+
+    nav button.on {
+      background: var(--brand);
+      color: #fff
+    }
+
+    nav button[disabled] {
+      opacity: .45;
+      cursor: default
+    }
+
+    nav em {
+      font-style: normal;
+      font-size: 11px;
+      margin-inline-start: auto;
+      opacity: .8
+    }
+
+    main {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 26px 30px;
+      min-width: 0
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 26px
+    }
+
+    .sub {
+      color: var(--mut);
+      margin: 0 0 18px
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      border-inline-start: 4px solid var(--brand);
+      padding-inline-start: 10px
+    }
+
+    pre {
+      direction: ltr;
+      text-align: left;
+      background: #0f1b2b;
+      color: #d6e4f5;
+      padding: 14px 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font: 13.5px/1.6 'JetBrains Mono', Consolas, monospace;
+      margin: 10px 0
+    }
+
+    .ex {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 14px 16px;
+      margin: 12px 0
+    }
+
+    .ex.d {
+      background: var(--soft)
+    }
+
+    .top {
+      display: flex;
+      gap: 10px;
+      align-items: center
+    }
+
+    .top label {
+      margin-inline-start: auto;
+      font-size: 13px;
+      color: var(--mut);
+      cursor: pointer
+    }
+
+    .lv {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 1px 10px;
+      border-radius: 20px;
+      border: 1px solid currentColor
+    }
+
+    .l1 {
+      color: var(--ok)
+    }
+
+    .l2 {
+      color: var(--warn)
+    }
+
+    .l3 {
+      color: var(--bad)
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--brand);
+      font-weight: 600
+    }
+
+    .note {
+      background: var(--soft);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 15px
+    }
+
+    .cp,
+    .nx button {
+      font: inherit;
+      background: var(--brand);
+      color: #fff;
+      border: 0;
+      border-radius: 7px;
+      padding: 6px 16px;
+      cursor: pointer
+    }
+
+    .nx {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 26px
+    }
+
+    .tb {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .tb div {
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px
+    }
+
+    .tb code {
+      direction: ltr;
+      display: block;
+      text-align: left;
+      font: 12.5px 'JetBrains Mono', monospace;
+      color: var(--mut)
+    }
+
+    @media(max-width:800px) {
+      .wrap {
+        grid-template-columns: 1fr
+      }
+
+      nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 4px;
+        padding: 6px
+      }
+
+      nav h4 {
+        display: none
+      }
+
+      nav button {
+        white-space: nowrap;
+        width: auto
+      }
+
+      main {
+        padding: 18px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div><b>SQL Lab</b><br><small>مراجعة Beginner + Intermediate · PostgreSQL</small></div>
+    <div class="pg"><span id="pt"></span>
+      <div class="bar"><i id="pb"></i></div>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav id="nav"></nav>
+    <main id="main"></main>
+  </div>
+  <script>
+    const SETUP = `CREATE TABLE customers(id INT PRIMARY KEY, name TEXT, city TEXT, email TEXT, joined DATE);
 CREATE TABLE products(id INT PRIMARY KEY, name TEXT, category TEXT, price NUMERIC(8,2));
 CREATE TABLE orders(id INT PRIMARY KEY, customer_id INT REFERENCES customers(id),
   product_id INT REFERENCES products(id), qty INT, order_date DATE, status TEXT);
@@ -44,58 +360,128 @@ INSERT INTO orders VALUES
 (1,1,1,1,'2025-01-15','delivered'),(2,1,3,2,'2025-02-02','delivered'),(3,2,2,1,'2025-02-10','cancelled'),
 (4,2,4,4,'2025-03-01','delivered'),(5,3,2,2,'2025-03-12','pending'),(6,4,1,1,'2025-04-20','delivered'),
 (7,4,4,1,'2025-05-05','pending'),(8,1,2,1,'2025-06-18','delivered'),(9,6,3,1,'2025-09-10','pending');`;
-const M=[
-{id:'setup',g:0,t:'Setup: داتا الكورس'},
-{id:'select',g:0,t:'Query Data (SELECT)',sub:'أساس كل حاجة: تختار أعمدة، ترتّب، وتحدّ النتيجة.',
-intro:'ترتيب الكتابة: <code>SELECT → FROM → ORDER BY → LIMIT</code>. و <code>DISTINCT</code> بتشيل التكرار من النتيجة. تجنّب <code>SELECT *</code> في الشغل الحقيقي واكتب الأعمدة اللي محتاجها.',
-code:"SELECT DISTINCT category\nFROM products\nORDER BY category;",
-ex:[[1,'هات اسم وإيميل كل العملاء.','SELECT name, email FROM customers;'],
-[1,'هات المدن اللي فيها عملاء من غير تكرار.','SELECT DISTINCT city FROM customers;'],
-[2,'هات أغلى 3 منتجات مرتبين من الأغلى للأرخص، وغيّر اسم عمود السعر في النتيجة لـ egp_price.','SELECT name, price AS egp_price\nFROM products\nORDER BY price DESC\nLIMIT 3;']]},
-{id:'where',g:1,t:'Filtering Data (WHERE)',sub:'WHERE بتفلتر الصفوف قبل أي تجميع.',
-intro:'العوامل: <code>= <> > < BETWEEN IN LIKE AND OR NOT</code>. القيمة <code>NULL</code> معناها "مجهول"، فمش بتتقارن بـ <code>=</code> أبداً، استخدم <code>IS NULL</code>. وانتبه لأولوية <code>AND</code> قبل <code>OR</code>، استخدم أقواس.',
-code:"SELECT * FROM orders\nWHERE status = 'pending'\n  AND qty >= 2;",
-ex:[[1,'العملاء اللي في Cairo.',"SELECT * FROM customers WHERE city = 'Cairo';"],
-[2,'الأوردرات اللي حالتها pending أو cancelled وكميتها أكتر من 1.',"SELECT * FROM orders\nWHERE status IN ('pending','cancelled') AND qty > 1;"],
-[2,'المنتجات اللي اسمها يبدأ بحرف C وسعرها بين 2000 و 13000.',"SELECT * FROM products\nWHERE name LIKE 'C%' AND price BETWEEN 2000 AND 13000;"],
-[3,'فخ: هات العملاء اللي مالهمش إيميل. (جرّب = NULL الأول وشوف إيه اللي بيحصل)','SELECT * FROM customers WHERE email IS NULL;\n-- email = NULL بترجّع صفر صفوف لأن NULL = NULL مش true']]},
-{id:'joins',g:1,t:'SQL Joins',sub:'تربط جداول ببعض عن طريق Foreign Key.',
-intro:'<code>INNER</code>: المتطابق بس. <code>LEFT</code>: كل صفوف الجدول الشمال + المتطابق (والباقي NULL). الفرق الحاسم: شرط في <code>ON</code> بيحدد الربط، وشرط في <code>WHERE</code> بيفلتر النتيجة النهائية (وممكن يلغي تأثير الـ LEFT).',
-code:"SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;",
-ex:[[1,'اسم العميل واسم المنتج وكمية كل أوردر.','SELECT c.name, p.name AS product, o.qty\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nJOIN products p ON p.id = o.product_id;'],
-[2,'العملاء اللي عمرهم ما عملوا أي أوردر.','SELECT c.name\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.id IS NULL;'],
-[2,'المنتجات اللي عمرها ما اتباعت.','SELECT p.name\nFROM products p\nLEFT JOIN orders o ON o.product_id = p.id\nWHERE o.id IS NULL;'],
-[3,"فخ: كل العملاء مع أوردراتهم الـ delivered بس، والعميل اللي معندوش delivered لازم يفضل ظاهر.","SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o\n  ON o.customer_id = c.id AND o.status = 'delivered';\n-- لو حطيت الشرط في WHERE العملاء دول هيختفوا"]]},
-{id:'agg',g:1,t:'Aggregate Functions',sub:'COUNT, SUM, AVG, MIN, MAX مع GROUP BY و HAVING.',
-intro:'<code>WHERE</code> يفلتر الصفوف قبل التجميع، و <code>HAVING</code> يفلتر المجموعات بعده. <code>COUNT(*)</code> بيعدّ الصفوف كلها، أما <code>COUNT(col)</code> فبيتجاهل الـ NULL. أي عمود في SELECT مش جوه دالة تجميع لازم يبقى في GROUP BY.',
-code:"SELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;",
-ex:[[1,'عدد العملاء، وعدد اللي ليهم إيميل، في استعلام واحد. (النتيجة المتوقعة 6 و 4)','SELECT COUNT(*) AS total, COUNT(email) AS with_email FROM customers;'],
-[2,'المدن اللي فيها أكتر من عميل.','SELECT city, COUNT(*) FROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;'],
-[3,"إجمالي مشتريات كل عميل (qty × price) من الأوردرات delivered بس، مرتّب من الأكبر.","SELECT c.name, SUM(o.qty * p.price) AS total\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nJOIN products p ON p.id = o.product_id\nWHERE o.status = 'delivered'\nGROUP BY c.name\nORDER BY total DESC;"]]}
-];
-const SOON=[[0,'DDL & DML'],[1,'Set Operators'],[1,'SQL Functions (String / Numeric / Date)'],[1,'NULL Functions & CASE'],[1,'Window Functions']];
-const $=s=>document.querySelector(s),esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem('sqllab')||'[]'))}catch(e){}
-const save=()=>{try{localStorage.setItem('sqllab',JSON.stringify([...done]))}catch(e){}};
-const total=M.reduce((a,m)=>a+(m.ex?m.ex.length:0),0);let cur=0;
-const LV=['','سهل','متوسط','صعب / فخ'];
-function nav(){let h='';[0,1].forEach(g=>{h+=`<h4>${g?'INTERMEDIATE':'BEGINNER'}</h4>`;
-M.forEach((m,i)=>{if(m.g==g){const n=m.ex?m.ex.filter((_,j)=>done.has(m.id+j)).length:0;
-h+=`<button class="${i==cur?'on':''}" onclick="go(${i})">${m.t}${m.ex?`<em>${n}/${m.ex.length}</em>`:''}</button>`}});
-SOON.forEach(s=>{if(s[0]==g)h+=`<button disabled>${s[1]}<em>قريباً</em></button>`})});$('#nav').innerHTML=h;
-$('#pb').style.width=100*done.size/total+'%';$('#pt').textContent=`التقدم: ${done.size} من ${total} تمرين`}
-function view(){const m=M[cur];let h=`<h1>${m.t}</h1>`;
-if(m.id=='setup'){h+=`<p class="sub">قاعدة بيانات واحدة تشتغل عليها كل التمارين: عملاء، منتجات، أوردرات.</p>
+    const M = [
+      { id: 'setup', g: 0, t: 'Setup: داتا الكورس' },
+      {
+        id: 'select', g: 0, t: 'Query Data (SELECT)', sub: 'أساس كل حاجة: تختار أعمدة، ترتّب، وتحدّ النتيجة.',
+        intro: 'ترتيب الكتابة: <code>SELECT → FROM → ORDER BY → LIMIT</code>. و <code>DISTINCT</code> بتشيل التكرار من النتيجة. تجنّب <code>SELECT *</code> في الشغل الحقيقي واكتب الأعمدة اللي محتاجها.',
+        code: "SELECT DISTINCT category\nFROM products\nORDER BY category;",
+        ex: [[1, 'هات اسم وإيميل كل العملاء.', 'SELECT name, email FROM customers;'],
+        [1, 'هات المدن اللي فيها عملاء من غير تكرار.', 'SELECT DISTINCT city FROM customers;'],
+        [2, 'هات أغلى 3 منتجات مرتبين من الأغلى للأرخص، وغيّر اسم عمود السعر في النتيجة لـ egp_price.', 'SELECT name, price AS egp_price\nFROM products\nORDER BY price DESC\nLIMIT 3;']]
+      },
+      {
+        id: 'ddl', g: 0, t: 'DDL & DML', sub: 'DDL بيعرّف شكل الجداول، و DML بيتعامل مع الداتا اللي جواها.',
+        intro: `<b>DDL</b>: <code>CREATE / ALTER / DROP / TRUNCATE</code> بتغيّر هيكل الجدول. <b>DML</b>: <code>INSERT / UPDATE / DELETE</code> بتغيّر الصفوف. القاعدة الذهبية: <code>UPDATE</code> و <code>DELETE</code> من غير <code>WHERE</code> بيمسّوا الجدول كله، فاكتب الـ WHERE الأول أو جرّب جوه <code>BEGIN; ... ROLLBACK;</code>. التمارين هنا على جدول جديد اسمه <code>wishlist</code> عشان داتا الكورس تفضل سليمة.`,
+        code: "BEGIN;\nUPDATE products SET price = price * 1.1\nWHERE category = 'Furniture';\nSELECT * FROM products;  -- راجع النتيجة\nROLLBACK;  -- أو COMMIT لو مبسوط",
+        ex: [[1, 'اعمل جدول wishlist فيه id (PK)، customer_id (FK على customers)، product_id (FK على products)، added_on تاريخ افتراضيه النهاردة.', 'CREATE TABLE wishlist(\n  id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(id),\n  product_id INT REFERENCES products(id),\n  added_on DATE DEFAULT CURRENT_DATE\n);'],
+        [1, 'ضيف 3 صفوف في wishlist بـ INSERT واحد.', 'INSERT INTO wishlist(id, customer_id, product_id)\nVALUES (1,1,2),(2,2,1),(3,4,3);'],
+        [2, 'ضيف عمود note من نوع TEXT، وبعدين اكتب في صف رقم 1 الملاحظة gift.', 'ALTER TABLE wishlist ADD COLUMN note TEXT;\nUPDATE wishlist SET note = \'gift\' WHERE id = 1;'],
+        [3, 'فخ: امسح من wishlist الصفوف الخاصة بالعميل 2 بس، وبعدها اتأكد إن الباقي سليم، وبعدين امسح الجدول نفسه.', 'DELETE FROM wishlist WHERE customer_id = 2;\nSELECT * FROM wishlist;\nDROP TABLE wishlist;\n-- DELETE بيمسح صفوف، TRUNCATE بيفضّي الجدول، DROP بيشيل الجدول نفسه']]
+      },
+      {
+        id: 'where', g: 1, t: 'Filtering Data (WHERE)', sub: 'WHERE بتفلتر الصفوف قبل أي تجميع.',
+        intro: 'العوامل: <code>= <> > < BETWEEN IN LIKE AND OR NOT</code>. القيمة <code>NULL</code> معناها "مجهول"، فمش بتتقارن بـ <code>=</code> أبداً، استخدم <code>IS NULL</code>. وانتبه لأولوية <code>AND</code> قبل <code>OR</code>، استخدم أقواس.',
+        code: "SELECT * FROM orders\nWHERE status = 'pending'\n  AND qty >= 2;",
+        ex: [[1, 'العملاء اللي في Cairo.', "SELECT * FROM customers WHERE city = 'Cairo';"],
+        [2, 'الأوردرات اللي حالتها pending أو cancelled وكميتها أكتر من 1.', "SELECT * FROM orders\nWHERE status IN ('pending','cancelled') AND qty > 1;"],
+        [2, 'المنتجات اللي اسمها يبدأ بحرف C وسعرها بين 2000 و 13000.', "SELECT * FROM products\nWHERE name LIKE 'C%' AND price BETWEEN 2000 AND 13000;"],
+        [3, 'فخ: هات العملاء اللي مالهمش إيميل. (جرّب = NULL الأول وشوف إيه اللي بيحصل)', 'SELECT * FROM customers WHERE email IS NULL;\n-- email = NULL بترجّع صفر صفوف لأن NULL = NULL مش true']]
+      },
+      {
+        id: 'joins', g: 1, t: 'SQL Joins', sub: 'تربط جداول ببعض عن طريق Foreign Key.',
+        intro: '<code>INNER</code>: المتطابق بس. <code>LEFT</code>: كل صفوف الجدول الشمال + المتطابق (والباقي NULL). الفرق الحاسم: شرط في <code>ON</code> بيحدد الربط، وشرط في <code>WHERE</code> بيفلتر النتيجة النهائية (وممكن يلغي تأثير الـ LEFT).',
+        code: "SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;",
+        ex: [[1, 'اسم العميل واسم المنتج وكمية كل أوردر.', 'SELECT c.name, p.name AS product, o.qty\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nJOIN products p ON p.id = o.product_id;'],
+        [2, 'العملاء اللي عمرهم ما عملوا أي أوردر.', 'SELECT c.name\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.id IS NULL;'],
+        [2, 'المنتجات اللي عمرها ما اتباعت.', 'SELECT p.name\nFROM products p\nLEFT JOIN orders o ON o.product_id = p.id\nWHERE o.id IS NULL;'],
+        [3, "فخ: كل العملاء مع أوردراتهم الـ delivered بس، والعميل اللي معندوش delivered لازم يفضل ظاهر.", "SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o\n  ON o.customer_id = c.id AND o.status = 'delivered';\n-- لو حطيت الشرط في WHERE العملاء دول هيختفوا"]]
+      },
+      {
+        id: 'sets', g: 1, t: 'Set Operators', sub: 'بتدمج نتيجتين استعلامين فوق بعض (مش جنب بعض زي الـ JOIN).',
+        intro: `<code>UNION</code> بيدمج وبيشيل التكرار، <code>UNION ALL</code> بيدمج من غير ما يشيل (أسرع)، <code>INTERSECT</code> المشترك بس، <code>EXCEPT</code> الموجود في الأول وغايب عن التاني. الشرط: نفس عدد الأعمدة وأنواع متوافقة، وأسماء الأعمدة بتتاخد من الاستعلام الأول.`,
+        code: "SELECT city FROM customers\nUNION\nSELECT 'Luxor';  -- نتيجة من غير تكرار",
+        ex: [[1, 'قايمة واحدة فيها أسماء العملاء وأسماء المنتجات في عمود واسمه label.', 'SELECT name AS label FROM customers\nUNION ALL\nSELECT name FROM products;'],
+        [2, 'المنتجات اللي عمرها ما اتباعت باستخدام EXCEPT.', 'SELECT id FROM products\nEXCEPT\nSELECT product_id FROM orders;'],
+        [2, 'العملاء اللي عندهم أوردر delivered وأوردر pending في نفس الوقت.', "SELECT customer_id FROM orders WHERE status = 'delivered'\nINTERSECT\nSELECT customer_id FROM orders WHERE status = 'pending';"],
+        [3, 'فخ: الفرق بين UNION و UNION ALL على أعمدة customer_id من orders. كام صف في كل واحد وليه؟', 'SELECT customer_id FROM orders UNION SELECT customer_id FROM orders;      -- 4 صفوف (متفرّدة)\nSELECT customer_id FROM orders UNION ALL SELECT customer_id FROM orders;  -- 18 صف (9 + 9)']]
+      },
+      {
+        id: 'funcs', g: 1, t: 'SQL Functions (String / Numeric / Date)', sub: 'دوال جاهزة على النصوص والأرقام والتواريخ.',
+        intro: `<b>نصوص</b>: <code>UPPER LOWER LENGTH TRIM REPLACE SUBSTRING SPLIT_PART CONCAT</code> و <code>||</code>. <b>أرقام</b>: <code>ROUND CEIL FLOOR ABS MOD</code>. <b>تواريخ</b>: <code>CURRENT_DATE EXTRACT DATE_TRUNC AGE</code> وجمع/طرح <code>INTERVAL</code>. فخ: <code>'a' || NULL</code> بترجّع NULL، أما <code>CONCAT</code> فبتتجاهل الـ NULL.`,
+        code: "SELECT name,\n       UPPER(name) AS up,\n       EXTRACT(YEAR FROM joined) AS yr,\n       ROUND(price * 1.14, 1) AS with_vat\nFROM customers, products LIMIT 3;",
+        ex: [[1, 'اسم كل عميل بحروف كبيرة وطول الاسم.', 'SELECT UPPER(name), LENGTH(name) FROM customers;'],
+        [2, 'دومين كل إيميل (الجزء بعد @) للعملاء اللي ليهم إيميل.', "SELECT name, SPLIT_PART(email,'@',2) AS domain\nFROM customers\nWHERE email IS NOT NULL;"],
+        [2, 'سعر كل منتج بعد ضريبة 14% مقرّب لرقم عشري واحد.', 'SELECT name, ROUND(price * 1.14, 1) AS with_vat FROM products;'],
+        [3, 'عدد الأوردرات في كل شهر مرتّب زمنياً.', "SELECT DATE_TRUNC('month', order_date)::date AS month, COUNT(*) AS n\nFROM orders\nGROUP BY 1\nORDER BY 1;"]]
+      },
+      {
+        id: 'nulls', g: 1, t: 'NULL Functions & CASE', sub: 'التعامل مع الفراغات والمنطق الشرطي جوه الكويري.',
+        intro: `<code>COALESCE(a,b,...)</code> بترجّع أول قيمة مش NULL. <code>NULLIF(a,b)</code> بترجّع NULL لو القيمتين متساويتين (مفيدة لتفادي القسمة على صفر). <code>CASE WHEN ... THEN ... ELSE ... END</code> هي الـ if/else بتاعت SQL، ولو نسيت <code>ELSE</code> هتطلع NULL.`,
+        code: "SELECT name,\n       COALESCE(email, 'no email') AS email,\n       CASE WHEN joined < '2025-01-01' THEN 'old' ELSE 'new' END AS grp\nFROM customers;",
+        ex: [[1, "اسم كل عميل وإيميله، ولو مفيش إيميل اكتب 'no email'.", "SELECT name, COALESCE(email, 'no email') AS email FROM customers;"],
+        [2, "صنّف المنتجات: أقل من 1000 'cheap'، أقل من 10000 'mid'، غير كده 'premium'.", "SELECT name, price,\n  CASE WHEN price < 1000 THEN 'cheap'\n       WHEN price < 10000 THEN 'mid'\n       ELSE 'premium' END AS tier\nFROM products;"],
+        [3, 'لكل عميل: عدد أوردراته الـ delivered وعدد الـ pending في عمودين (Conditional Aggregation).', "SELECT c.name,\n  COUNT(CASE WHEN o.status='delivered' THEN 1 END) AS delivered,\n  COUNT(CASE WHEN o.status='pending' THEN 1 END) AS pending\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name;\n-- COUNT بيتجاهل NULL، فالـ CASE من غير ELSE بيعدّ المطابق بس"]]
+      },
+      {
+        id: 'agg', g: 1, t: 'Aggregate Functions', sub: 'COUNT, SUM, AVG, MIN, MAX مع GROUP BY و HAVING.',
+        intro: '<code>WHERE</code> يفلتر الصفوف قبل التجميع، و <code>HAVING</code> يفلتر المجموعات بعده. <code>COUNT(*)</code> بيعدّ الصفوف كلها، أما <code>COUNT(col)</code> فبيتجاهل الـ NULL. أي عمود في SELECT مش جوه دالة تجميع لازم يبقى في GROUP BY.',
+        code: "SELECT city, COUNT(*) AS n\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;",
+        ex: [[1, 'عدد العملاء، وعدد اللي ليهم إيميل، في استعلام واحد. (النتيجة المتوقعة 6 و 4)', 'SELECT COUNT(*) AS total, COUNT(email) AS with_email FROM customers;'],
+        [2, 'المدن اللي فيها أكتر من عميل.', 'SELECT city, COUNT(*) FROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;'],
+        [3, "إجمالي مشتريات كل عميل (qty × price) من الأوردرات delivered بس، مرتّب من الأكبر.", "SELECT c.name, SUM(o.qty * p.price) AS total\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nJOIN products p ON p.id = o.product_id\nWHERE o.status = 'delivered'\nGROUP BY c.name\nORDER BY total DESC;"]]
+      },
+      {
+        id: 'win', g: 1, t: 'Window Functions', sub: 'بتحسب على مجموعة صفوف من غير ما تدمجها (عكس GROUP BY).',
+        intro: `الصيغة: <code>دالة() OVER (PARTITION BY ... ORDER BY ...)</code>. <b>ترتيب</b>: <code>ROW_NUMBER RANK DENSE_RANK</code>. <b>قيم</b>: <code>LAG LEAD FIRST_VALUE</code>. <b>تجميع</b>: <code>SUM() OVER</code> مع ORDER BY بتدّي مجموع تراكمي. مهم: مينفعش تستخدم دالة window في <code>WHERE</code>، لف الاستعلام في CTE أو subquery وفلتر بره.`,
+        code: "SELECT name, category, price,\n       RANK() OVER (PARTITION BY category ORDER BY price DESC) AS rk\nFROM products;",
+        ex: [[1, 'رتّب المنتجات جوه كل category من الأغلى للأرخص (RANK).', 'SELECT name, category, price,\n  RANK() OVER (PARTITION BY category ORDER BY price DESC) AS rk\nFROM products;'],
+        [2, 'المبيعات التراكمية (Running Total) بترتيب تاريخ الأوردر، لكل الأوردرات.', 'SELECT o.id, o.order_date, o.qty * p.price AS amount,\n  SUM(o.qty * p.price) OVER (ORDER BY o.order_date, o.id) AS running_total\nFROM orders o\nJOIN products p ON p.id = o.product_id;'],
+        [2, 'لكل أوردر: تاريخ الأوردر السابق لنفس العميل وعدد الأيام بينهم (LAG).', 'SELECT customer_id, order_date,\n  LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev,\n  order_date - LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS gap_days\nFROM orders;'],
+        [3, 'فخ: أكبر أوردر (بالقيمة) لكل عميل. جرّب تحط ROW_NUMBER في WHERE الأول وشوف الخطأ.', 'WITH r AS (\n  SELECT o.customer_id, o.id, o.qty * p.price AS amount,\n    ROW_NUMBER() OVER (PARTITION BY o.customer_id ORDER BY o.qty * p.price DESC) AS rn\n  FROM orders o JOIN products p ON p.id = o.product_id\n)\nSELECT * FROM r WHERE rn = 1;']]
+      }
+    ];
+    const SOON = [[2, 'Subqueries'], [2, 'CTE (Common Table Expressions)'], [2, 'Views'], [2, 'CTAS & Temp Tables'], [2, 'Stored Procedures'], [2, 'Triggers'], [2, 'Indexes'], [2, 'Execution Plan'], [2, 'Partitions']];
+    const GN = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'];
+    const $ = s => document.querySelector(s), esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let done = new Set(); try { done = new Set(JSON.parse(localStorage.getItem('sqllab') || '[]')) } catch (e) { }
+    const save = () => { try { localStorage.setItem('sqllab', JSON.stringify([...done])) } catch (e) { } };
+    const total = M.reduce((a, m) => a + (m.ex ? m.ex.length : 0), 0); let cur = 0;
+    const LV = ['', 'سهل', 'متوسط', 'صعب / فخ'];
+    function nav() {
+      let h = '';[0, 1, 2].forEach(g => {
+        h += `<h4>${GN[g]}</h4>`;
+        M.forEach((m, i) => {
+          if (m.g == g) {
+            const n = m.ex ? m.ex.filter((_, j) => done.has(m.id + j)).length : 0;
+            h += `<button class="${i == cur ? 'on' : ''}" onclick="go(${i})">${m.t}${m.ex ? `<em>${n}/${m.ex.length}</em>` : ''}</button>`
+          }
+        });
+        SOON.forEach(s => { if (s[0] == g) h += `<button disabled>${s[1]}<em>قريباً</em></button>` })
+      }); $('#nav').innerHTML = h;
+      $('#pb').style.width = 100 * done.size / total + '%'; $('#pt').textContent = `التقدم: ${done.size} من ${total} تمرين`
+    }
+    function view() {
+      const m = M[cur]; let h = `<h1>${m.t}</h1>`;
+      if (m.id == 'setup') {
+        h += `<p class="sub">قاعدة بيانات واحدة تشتغل عليها كل التمارين: عملاء، منتجات، أوردرات.</p>
 <div class="tb"><div><b>customers</b><code>id, name, city, email, joined</code></div><div><b>products</b><code>id, name, category, price</code></div><div><b>orders</b><code>id, customer_id, product_id, qty, order_date, status</code></div></div>
 <p class="note">الداتا فيها حالات مقصودة: عملاء من غير إيميل (NULL)، عميل من غير أوردرات (Hady)، منتج عمره ما اتباع (Notebook)، وأوردرات بحالات مختلفة. دي اللي بتكشف أخطاء الـ JOIN والـ NULL.</p>
 <h3>شغّل السكريبت مرة واحدة</h3><p>انسخه وشغّله في pgAdmin أو psql داخل قاعدة جديدة (مثلاً <code>CREATE DATABASE sql_lab;</code>) وبعدها حل كل التمارين عليها.</p>
-<button class="cp" onclick="cp()" id="cpb">نسخ السكريبت</button><pre id="sq">${esc(SETUP)}</pre>`}
-else{h+=`<p class="sub">${m.sub}</p><h3>الفكرة</h3><p>${m.intro}</p><pre>${esc(m.code)}</pre><h3>تمارين: اكتب الكويري بنفسك الأول</h3>`;
-m.ex.forEach((e,j)=>{const k=m.id+j;h+=`<div class="ex ${done.has(k)?'d':''}"><div class="top"><span class="lv l${e[0]}">${LV[e[0]]}</span><b>تمرين ${j+1}</b><label><input type="checkbox" ${done.has(k)?'checked':''} onchange="tg('${k}')"> خلصته</label></div><p>${e[1]}</p><details><summary>اعرض الحل</summary><pre>${esc(e[2])}</pre></details></div>`})}
-h+=`<div class="nx"><button onclick="go(${cur-1})" ${cur?'':'style="visibility:hidden"'}>← السابق</button><button onclick="go(${cur+1})" ${cur<M.length-1?'':'style="visibility:hidden"'}>التالي →</button></div>`;
-$('#main').innerHTML=h}
-function go(i){cur=i;nav();view();scrollTo(0,0)}
-function tg(k){done.has(k)?done.delete(k):done.add(k);save();nav();const m=M[cur];[...document.querySelectorAll('.ex')].forEach((d,j)=>d.classList.toggle('d',done.has(m.id+j)))}
-function cp(){try{navigator.clipboard.writeText(SETUP);$('#cpb').textContent='تم النسخ'}catch(e){const r=document.createRange();r.selectNodeContents($('#sq'));getSelection().removeAllRanges();getSelection().addRange(r)}}
-go(0);
-</script></body></html>
+<button class="cp" onclick="cp()" id="cpb">نسخ السكريبت</button><pre id="sq">${esc(SETUP)}</pre>`
+      }
+      else {
+        h += `<p class="sub">${m.sub}</p><h3>الفكرة</h3><p>${m.intro}</p><pre>${esc(m.code)}</pre><h3>تمارين: اكتب الكويري بنفسك الأول</h3>`;
+        m.ex.forEach((e, j) => { const k = m.id + j; h += `<div class="ex ${done.has(k) ? 'd' : ''}"><div class="top"><span class="lv l${e[0]}">${LV[e[0]]}</span><b>تمرين ${j + 1}</b><label><input type="checkbox" ${done.has(k) ? 'checked' : ''} onchange="tg('${k}')"> خلصته</label></div><p>${e[1]}</p><details><summary>اعرض الحل</summary><pre>${esc(e[2])}</pre></details></div>` })
+      }
+      h += `<div class="nx"><button onclick="go(${cur - 1})" ${cur ? '' : 'style="visibility:hidden"'}>← السابق</button><button onclick="go(${cur + 1})" ${cur < M.length - 1 ? '' : 'style="visibility:hidden"'}>التالي →</button></div>`;
+      $('#main').innerHTML = h
+    }
+    function go(i) { cur = i; nav(); view(); scrollTo(0, 0) }
+    function tg(k) { done.has(k) ? done.delete(k) : done.add(k); save(); nav(); const m = M[cur];[...document.querySelectorAll('.ex')].forEach((d, j) => d.classList.toggle('d', done.has(m.id + j))) }
+    function cp() { try { navigator.clipboard.writeText(SETUP); $('#cpb').textContent = 'تم النسخ' } catch (e) { const r = document.createRange(); r.selectNodeContents($('#sq')); getSelection().removeAllRanges(); getSelection().addRange(r) } }
+    go(0);
+  </script>
+</body>
+
+</html>
